@@ -3,6 +3,7 @@ import 'package:login_page_flutter/api_manager/api_base_helper.dart';
 import 'package:login_page_flutter/api_manager/api_manage_model.dart';
 import 'package:login_page_flutter/api_manager/loginresponsemodel.dart';
 import 'package:login_page_flutter/login/login_api_request_model.dart';
+import 'package:login_page_flutter/login/login_response_model.dart';
 
 class LoginAPIRepository {
   final String _getNewsOpinionSummery =
@@ -36,7 +37,7 @@ class LoginAPIRepository {
   //   var list = DashboardReportSummeryModel.fromJson(response);
   //   return list;
   // }
-  Future<LoginResponse> postAPICall(String username, String password) async {
+  Future<LoginResponseModel> postAPICall(String username, String password) async {
     // 1. API Manager  Model Making;
     var loginRequestModel = LoginRequestModel(
         username: username,
@@ -62,7 +63,7 @@ class LoginAPIRepository {
         await _helper.manageAPI(requestData: requestData, isForLogin: true);
 
     // 3.APi response JSON convert into model;
-    var loginResponse = LoginResponse.fromJson(response);
+    var loginResponse = LoginResponseModel.fromJson(response);
 
     // 4. return converted model;
     return loginResponse;

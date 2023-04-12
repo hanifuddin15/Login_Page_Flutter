@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:login_page_flutter/api_manager/loginresponsemodel.dart';
 import 'package:login_page_flutter/login/login_api_repository.dart';
+import 'package:login_page_flutter/login/login_response_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,6 +14,7 @@ class _LoginPage extends State<LoginPage> {
   final _formKey = GlobalKey<ScaffoldState>();
   String _phoneNumber = '';
   String _password = '';
+      LoginResponseModel? loginAPIresponse ;
 
   bool _isButtonEnabled = false;
 
@@ -20,31 +23,32 @@ class _LoginPage extends State<LoginPage> {
       _isButtonEnabled = _phoneNumber.isNotEmpty && _password.isNotEmpty;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: const Text('Login Page'),
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo
-                FlutterLogo(size: 100.0),
+                const FlutterLogo(size: 100.0),
 
-                SizedBox(height: 24.0),
+                const SizedBox(height: 24.0),
 
                 // Phone Number TextFormField with validation
                 TextFormField(
                   keyboardType: TextInputType.phone,
                   maxLength: 11,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Phone Number',
                   ),
                   validator: (value) {
@@ -61,12 +65,12 @@ class _LoginPage extends State<LoginPage> {
                   },
                 ),
 
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 // Password TextFormField
                 TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                   ),
                   validator: (value) {
@@ -82,19 +86,26 @@ class _LoginPage extends State<LoginPage> {
                   },
                 ),
 
-                SizedBox(height: 24.0),
+                const SizedBox(height: 24.0),
 
                 // Login Button
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                    var loginRepo  = LoginAPIRepository( _formKey);
-                   loginRepo.postAPICall(_phoneNumber, _password);
+                   
+
                     if (_isButtonEnabled) {
+                     loginAPIresponse = await loginRepo.postAPICall(_phoneNumber, _password);
                       print(_phoneNumber);
                       print(_password);
                     }
+                   
+                    if (loginAPIresponse!.statusCode==200){
+                      print("successful");
+                      
+                    }
                   },
-                  child: Text('Login'),
+                  child: const Text('Login'),
                 ),
               ],
             ),

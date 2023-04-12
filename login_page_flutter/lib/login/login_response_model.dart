@@ -8,4 +8,11 @@ class LoginResponseModel {
     int? statusCode;
     String? message;
     String? details;
+
+     LoginResponseModel.fromJson(Map<String, dynamic> json) {
+    statusCode = json['statusCode'];
+    message = json['message'];
+    details = json['details'];
+    
+  }
 }
